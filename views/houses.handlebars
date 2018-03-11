@@ -4,13 +4,15 @@
 <table>
     <thead>
         <th>House Name</th>
-        <th>Head Professor</th>
+        <th>Head Professor<br>First Name</th>
+        <th>Head Professor<br>Last Name</th>
     </thead>
     <tbody>
         {{#each houses}}
         <tr>
             <td>{{this.name}}</td>
-            <td>{{this.head_prof}}</td>
+            <td>{{this.head_prof_fname}}</td>
+            <td>{{this.head_prof_lname}}</td>
 
             <td><button onclick="deletehouse({{id}})">Delete</button></td>
             <td><a href="/houses/{{this.id}}">Update</a></td>
@@ -23,7 +25,7 @@
     <!--Head Professor: <input type="text" name="head_prof"><br>-->
     Head Professor: <select name="head_prof">
       {{#each Professors}}
-        <option value="{{id}}">{{this.fname}} {{this.lname}}</option>
+        <option value="{{id}}">{{this.head_prof_fname}} {{this.head_prof_lname}}</option>
       {{/each}}
     </select><br>
     <input type="submit" value="Submit">
