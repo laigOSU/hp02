@@ -1,0 +1,32 @@
+<h1>Harry Potter DB</h1>
+<h3>By Geneva Lai and Anthony Scimone</h3>
+<h1>Hogwarts Houses:</h1>
+<table>
+    <thead>
+        <th>House Name</th>
+        <th>Head Professor</th>
+    </thead>
+    <tbody>
+        {{#each houses}}
+        <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.head_prof}}</td>
+
+            <td><button onclick="deletehouse({{id}})">Delete</button></td>
+            <td><a href="/houses/{{this.id}}">Update</a></td>
+
+        </tr>
+        {{/each}}
+    </tbody>
+    <form id="addhouse" action="/houses" method="post">
+    House Name: <input type="text" name="name"><br>
+    <!--Head Professor: <input type="text" name="head_prof"><br>-->
+    Head Professor: <select name="head_prof">
+      {{#each Professors}}
+        <option value="{{id}}">{{this.fname}} {{this.lname}}</option>
+      {{/each}}
+    </select><br>
+    <input type="submit" value="Submit">
+</form>
+
+</table>
