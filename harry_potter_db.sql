@@ -1,3 +1,5 @@
+-- cleaned and updated 03-11-18
+
 DROP TABLE IF EXISTS `Students`;
 DROP TABLE IF EXISTS `Houses`;
 DROP TABLE IF EXISTS `Professors`;
