@@ -23,25 +23,50 @@
         </tr>
         {{/each}}
     </tbody>
+    </table>
 
     <!--******************************************************************
-      ADD HOUSE
+      ADD HOUSE (INSERT)
     *******************************************************************-->
-    <form id="addhouse" action="/houses" method="post">
-    Add House Name: <input type="text" name="name"><br>
-    <!--Head Professor: <input type="text" name="head_prof"><br>-->
-    Add Head Professor (last name): <select name="head_prof">
-      {{#each professors}}
-        <option value="{{this.id}}">{{this.fname}} {{this.lname}}</option>
-      {{/each}}
-    </select><br>
-    <input type="submit" value="Add House">
-</form>
-
-</table>
+  <form id="addhouse" action="/houses" method="post">
+      House Name: <input type="text" name="name"><br>
+      <!--Head Professor: <input type="text" name="head_prof"><br>-->
+      Head Professor: <select name="head_prof">
+        {{#each professors}}
+          <option value="{{this.id}}">{{this.fname}} {{this.lname}}</option>
+        {{/each}}
+      </select><br>
+      <input type="submit" value="Add House">
+  </form>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--space buffer-->
 
 
 
