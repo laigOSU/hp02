@@ -47,18 +47,6 @@ module.exports = function(){
   });
   }
 
-  function getStudents(res, mysql, context, complete){
-	    mysql.pool.query('SELECT Students.id AS id, Students.fname, Students.lname, Houses.name AS house, Classes.name AS class FROM Enrolled INNER JOIN Students ON Enrolled.sid = Students.id INNER JOIN Classes ON Enrolled.cid = Classes.id INNER JOIN Houses ON Students.house = Houses.id', function(error, results, fields){
-	        if(error){
-	            res.write(JSON.stringify(error));
-	            res.end();
-	        }
-	        context.students = results;
-	        console.log(context)
-	        complete();
-
-	    });
-	}
 
   /*****************************************************************************
     DISPLAY ALL HOUSES
@@ -69,10 +57,9 @@ module.exports = function(){
     var mysql = req.app.get('mysql');
     getHouses(res, mysql, context, complete)
     getProfessors(res, mysql, context, complete)
-    getStudents(res, mysql, context, complete)
     function complete(){
             callbackCount++;
-            if(callbackCount >= 3){
+            if(callbackCount >= 2){
                 res.render('houses', context);
             }
     }
