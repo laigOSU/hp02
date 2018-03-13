@@ -10,7 +10,7 @@ module.exports = function(){
     HELPER QUERY FUNCTIONS
   *****************************************************************************/
   function getHouses(res, mysql, context, complete){
-    mysql.pool.query('SELECT Houses.id AS id, Houses.name,Professors.fname AS head_prof_fname, Professors.lname AS head_prof_lname FROM Houses INNER JOIN Professors ON Professors.house = Houses.id',
+    mysql.pool.query('SELECT Houses.id AS id, Houses.name, Professors.fname AS head_prof_fname, Professors.lname AS head_prof_lname FROM Houses INNER JOIN Professors ON Professors.house = Houses.id OR Professors.id = Houses.head_prof',
       function(error, results, fields){
         if(error){
             res.write(JSON.stringify(error));
@@ -24,7 +24,7 @@ module.exports = function(){
 
   function getHouse(res, mysql, context, req, complete){
 
-    mysql.pool.query('SELECT Houses.id AS id, Houses.name, Professors.fname AS head_prof_fname, Professors.lname AS head_prof_lname FROM Houses INNER JOIN Professors ON Professors.house = Houses.id WHERE Houses.id ='+req.params.id,
+    mysql.pool.query('SELECT Houses.id AS id, Houses.name, Professors.fname AS head_prof_fname, Professors.lname AS head_prof_lname FROM Houses INNER JOIN Professors ON Professors.house = Houses.id OR Professors.id = Houses.head_prof WHERE Houses.id ='+req.params.id,
     function(error, results, fields){
          if(error){
              res.write(JSON.stringify(error));
@@ -36,7 +36,7 @@ module.exports = function(){
   }
 
   function getProfessors(res, mysql, context, complete){
-    mysql.pool.query('SELECT Professors.id AS id, Professors.fname, Professors.lname, Houses.name AS name FROM Professors INNER JOIN Houses ON Houses.id = Professors.house',
+    mysql.pool.query('SELECT Professors.id AS id, Professors.fname, Professors.lname, Houses.name AS name FROM Professors INNER JOIN Houses ON Houses.id = Professors.house OR Houses.head_prof = Professors.id',
     function(error, results, fields){
       if(error){
           res.write(JSON.stringify(error));
@@ -45,9 +45,20 @@ module.exports = function(){
       context.professors = results;
       complete();
   });
-
   }
 
+  function getStudents(res, mysql, context, complete){
+	    mysql.pool.query('SELECT Students.id AS id, Students.fname, Students.lname, Houses.name AS house, Classes.name AS class FROM Enrolled INNER JOIN Students ON Enrolled.sid = Students.id INNER JOIN Classes ON Enrolled.cid = Classes.id INNER JOIN Houses ON Students.house = Houses.id', function(error, results, fields){
+	        if(error){
+	            res.write(JSON.stringify(error));
+	            res.end();
+	        }
+	        context.students = results;
+	        console.log(context)
+	        complete();
+
+	    });
+	}
 
   /*****************************************************************************
     DISPLAY ALL HOUSES
@@ -58,9 +69,10 @@ module.exports = function(){
     var mysql = req.app.get('mysql');
     getHouses(res, mysql, context, complete)
     getProfessors(res, mysql, context, complete)
+    getStudents(res, mysql, context, complete)
     function complete(){
             callbackCount++;
-            if(callbackCount >= 2){
+            if(callbackCount >= 3){
                 res.render('houses', context);
             }
     }
@@ -69,7 +81,7 @@ module.exports = function(){
 
 
   /*****************************************************************************
-    DISPLAY ONE HOUSE (for UPDATE only)
+    DISPLAY ONE HOUSE (FOR UPDATE HOUSE)
   *****************************************************************************/
   router.get('/:id',function(req,res){
 		var context = {};
