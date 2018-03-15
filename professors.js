@@ -11,7 +11,7 @@ module.exports = function(){
     HELPER QUERY FUNCTIONS
 *****************************************************************************/
   function getProfessors(res, mysql, context, complete){
-    mysql.pool.query('SELECT Professors.id AS id, Professors.fname, Professors.lname, Houses.name AS name FROM Professors INNER JOIN Houses ON Houses.id = Professors.house OR Houses.head_prof = Professors.id',
+    mysql.pool.query('SELECT Professors.id AS id, Professors.fname, Professors.lname, Houses.name AS house FROM Professors INNER JOIN Houses ON Houses.id = Professors.house OR Houses.head_prof = Professors.id',
     function(error, results, fields){
       if(error){
           res.write(JSON.stringify(error));
@@ -105,7 +105,7 @@ module.exports = function(){
 
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');
-        var sql = "DELETE FROM Students WHERE id = ?";
+        var sql = "DELETE FROM Professors WHERE id = ?";
         var inserts = [req.params.id];
         sql = mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
@@ -113,7 +113,7 @@ module.exports = function(){
                 res.status(400);
                 res.end();
             }else{
-                res.redirect('/students');
+                res.redirect('/professors');
             }
         })
 	});
