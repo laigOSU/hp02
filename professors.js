@@ -35,7 +35,7 @@ module.exports = function(){
   }
 
 	function getHouses(res, mysql, context, complete){
-	    mysql.pool.query('SELECT Houses.id, Houses.name FROM Houses', function(error, results, fields){
+	    mysql.pool.query('SELECT Houses.id AS id, Houses.name AS name FROM Houses', function(error, results, fields){
 	        if(error){
 	            res.write(JSON.stringify(error));
 	            res.end();
@@ -45,6 +45,9 @@ module.exports = function(){
 	    });
 	}
 
+  /*****************************************************************************
+    DISPLAY ALL PROFESSORS
+  *****************************************************************************/
 	router.get('/',function(req,res){
 		var context = {};
 		callbackCount = 0;
@@ -59,6 +62,9 @@ module.exports = function(){
 		}
 	});
 
+  /*****************************************************************************
+    DISPLAY ONE PROF (for UPDATE only)
+  *****************************************************************************/
 	router.get('/:id',function(req,res){
 		var context = {};
 		callbackCount = 0;
@@ -75,6 +81,9 @@ module.exports = function(){
 		}
 	});
 
+  /*****************************************************************************
+    INSERT PROF
+  *****************************************************************************/
     router.post('/', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = "INSERT INTO Professors (fname, lname, house) VALUES (?,?,?)";
@@ -89,6 +98,9 @@ module.exports = function(){
         });
 	});
 
+  /*****************************************************************************
+    UPDATE PROF
+  *****************************************************************************/
     router.put('/:id', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = "UPDATE Professors SET fname=?, lname=?, house=? WHERE id=?";
@@ -102,6 +114,10 @@ module.exports = function(){
             }
         });
 	});
+
+  /*****************************************************************************
+    DELETE PROF
+  *****************************************************************************/
 
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');
