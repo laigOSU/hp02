@@ -1,6 +1,16 @@
 <h1>Harry Potter DB</h1>
 <h3>By Geneva Lai and Anthony Scimone</h3>
 <h1>Hogwarts Professors:</h1>
+
+<form id="addprofessor" action="/professors" method="post">
+    First name: <input type="text" name="fname"><br>
+    Last name: <input type="text" name="lname"><br>
+    House: <select name="house">
+        {{#each houses}}
+        <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+    <input type="submit" value="ADD">
+</form>
 <table>
     <thead>
         <th>First Name</th>
@@ -19,14 +29,6 @@
         {{/each}}
     </tbody>
 
-<form id="addprofessor" action="/professors" method="post">
-    First name: <input type="text" name="fname"><br>
-    Last name: <input type="text" name="lname"><br>
-    House: <select name="house">
-        {{#each houses}}
-        <option value="{{id}}">{{this.name}}</option>
-        {{/each}}
-    <input type="submit" value="ADD">
-</form>
+
 
 </table>
