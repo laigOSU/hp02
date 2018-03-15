@@ -4,6 +4,7 @@
 var express = require('express');
 var mysql = require('./dbcon.js');
 var bodyParser = require('body-parser');
+var methodOverride = require("method-override");
 
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
@@ -14,6 +15,7 @@ app.use('/static', express.static('public'));
 app.set('view engine', 'handlebars');
 app.set('port', 8315);
 app.set('mysql', mysql);
+app.use(methodOverride("_method"));
 
 
 /*****************************************************************************
@@ -31,10 +33,24 @@ app.use('/students', require('./students.js'))
 /*****************************************************************************
   EXPORT SET UP FOR HOUSES.JS
 *****************************************************************************/
-
 app.use('/houses', require('./houses.js'))
 
+/*****************************************************************************
+  EXPORT SET UP FOR CLASSES.JS
+*****************************************************************************/
+app.use('/classes', require('./classes.js'))
 
+
+
+/*****************************************************************************
+  EXPORT SET UP FOR PROFESSORS.JS
+*****************************************************************************/
+app.use('/professors', require('./professors.js'))
+
+/*****************************************************************************
+  EXPORT SET UP FOR ENROLLMENT.JS
+*****************************************************************************/
+app.use('/enrollment', require('./enrollment.js'))
 
 /*****************************************************************************
   ERROR HANDLERS & LISTEN PORT

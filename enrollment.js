@@ -5,19 +5,20 @@ module.exports = function(){
 	var methodOverride = require("method-override");
 
 	function getStudents(res, mysql, context, complete){
-	    mysql.pool.query('SELECT Students.id AS id, Students.fname, Students.lname, Houses.name AS house FROM Students INNER JOIN Houses ON Students.house = Houses.id', function(error, results, fields){
+	    mysql.pool.query('SELECT Students.id AS id, Students.fname, Students.lname, FROM Students', function(error, results, fields){
 	        if(error){
 	            res.write(JSON.stringify(error));
 	            res.end();
 	        }
 	        context.students = results;
+	        console.log(context)
 	        complete();
 
 	    });
 	}
 
 	function getStudent(res, mysql, context, req, complete){
-	    mysql.pool.query('SELECT Students.id, Students.fname, Students.lname, Houses.id AS house FROM Students INNER JOIN Houses ON Students.house = Houses.id WHERE Students.id ='+req.params.id, function(error, results, fields){
+	    mysql.pool.query('SELECT Students.id, Students.fname, Students.lname FROM Students WHERE Students.id ='+req.params.id, function(error, results, fields){
 	        if(error){
 	            res.write(JSON.stringify(error));
 	            res.end();
@@ -27,7 +28,7 @@ module.exports = function(){
 	    });
 	}
 
-	function getHouses(res, mysql, context, complete){
+	function getClasses(res, mysql, context, complete){
 	    mysql.pool.query('SELECT Houses.id, Houses.name FROM Houses', function(error, results, fields){
 	        if(error){
 	            res.write(JSON.stringify(error));
@@ -43,11 +44,11 @@ module.exports = function(){
 		callbackCount = 0;
 		var mysql = req.app.get('mysql');
 		getStudents(res, mysql, context, complete)
-		getHouses(res, mysql, context, complete)
+		getClasses(res, mysql, context, complete)
 		function complete(){
             callbackCount++;
             if(callbackCount >= 2){
-                res.render('students', context);
+                res.render('enrollment', context);
             }
 		}
 	});
@@ -63,6 +64,7 @@ module.exports = function(){
 		function complete(){
             callbackCount++;
             if(callbackCount >= 2){
+            	console.log(context)
                 res.render('update-student', context);
             }
 		}
@@ -94,8 +96,7 @@ module.exports = function(){
 				res.redirect('/students');
             }
         });
-	});
-
+});
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = "DELETE FROM Students WHERE id = ?";
@@ -109,7 +110,7 @@ module.exports = function(){
                 res.redirect('/students');
             }
         })
-	});
+})
 
 	return router;
 }();

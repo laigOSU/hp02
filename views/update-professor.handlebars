@@ -1,6 +1,6 @@
-<h1>Update {{student.fname}} {{student.lname}}:</h1>
+<h1>Update {{professor.fname}} {{Professor.lname}}:</h1>
 
-<form id="update-student" action="/students/{{student.id}}?_method=PUT" method="POST">
+<form id="update-professor" action="/professors/{{professor.id}}?_method=PUT" method="POST">
     First name: <input type="text" name="fname" value="{{student.fname}}"><br>
     Last name: <input type="text" name="lname" value="{{student.lname}}"><br>
     House: <select name="house" id="house-selector">
